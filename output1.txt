@@ -4,7 +4,7 @@ Initial values:			0	60	500	59
 	stack : 
 15	INC	0	1	48	60	500	60	0 
 	stack : 
-Please Enter an Integer: 16	SYS	0	2	51	60	500	61	0 3 
+Please Enter an Integer: 16	SYS	0	2	51	60	500	61	0 3
 	stack : 
 17	CAL	0	6	6	499	500	61	0 3 
 	stack : 

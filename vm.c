@@ -9,6 +9,7 @@ This assignment creates a stack based P-machine*/
 
 /*todo Fix Errors
  *Todo: Implementation of Fetch Cycle
+ *  I think this was fixed with use of extra variable for address
  *Todo: Segfaults on input
  * */
 
@@ -31,6 +32,8 @@ int PC;
 int SP = MAX_PAS_LENGTH;
 int pas[MAX_PAS_LENGTH];
 
+//Define
+
 //Function Stubs
 int base(int L);
 void print_execution(int line, char *opname, int *IR, int PC, int BP, int SP, int DP, int *pas, int GP);
@@ -41,7 +44,7 @@ int* programCounter;
 int main(int argc, char* argv[]){
     //Is the VM Running
     int flag = 1;
-    //CHar array to hold call name
+    //Char array to hold call name
     char OP[4];
 
     FILE* inFile = fopen("test1.txt","r");
@@ -57,7 +60,6 @@ int main(int argc, char* argv[]){
     }
 
     //Load input file into text space
-
     while(!feof(inFile)){
         fscanf(inFile, "%d %d %d", &pas[IC], &pas[IC+1], &pas[IC+2]);
         //printf("%d %d %d\n", pas[IC], pas[IC+1], pas[IC+2]);
@@ -111,7 +113,7 @@ int main(int argc, char* argv[]){
                 break;
 
             case 2:
-                switch (instructionRegister.L) {
+                switch (instructionRegister.M) {
 
                     case 0:
                         SP = BP + 1;
@@ -337,11 +339,11 @@ int main(int argc, char* argv[]){
                     case 1:
                         if(BP == GP){
                             DP++;
-                            printf("%d", pas[DP]);
+                            printf("Top of Stack Value: %d\n", pas[DP]);
                             DP--;
                         }
                         else{
-                            printf("%d", pas[SP]);
+                            printf("Top of Stack Value: %d\n", pas[SP]);
                             SP++;
                         }
 
@@ -367,19 +369,9 @@ int main(int argc, char* argv[]){
         }
 
         //PC+=3;
+        print_execution(lineNum, OP, &instructionRegister.OP, PC, BP, SP, DP, pas, GP);
         lineNum = (PC/3);
-
-        print_execution(lineNum, OP, &instructionRegister.L, PC, BP, SP, DP, pas, GP);
-
     }
-
-
-//
-//    //Print Entire PAS
-//    for(int j = 0; j < MAX_PAS_LENGTH; j++){
-//        printf("%d", pas[j]);
-//    }
-
 
     return 0;
 }
@@ -396,7 +388,6 @@ int base(int L)
     }
     return arb;
 }
-
 
 //Given Print Function
 void print_execution(int line, char *opname, int *IR, int PC, int BP, int SP, int DP, int *pas, int GP)
