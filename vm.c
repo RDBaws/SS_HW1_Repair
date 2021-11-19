@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
     //Char array to hold call name
     char OP[4];
 
-    FILE* inFile = fopen("test1.txt","r");
+    FILE* inFile = fopen(argv[1],"r");
     if(!inFile){
         printf("Input Not Opened! Please try again!\n");
         exit(-1);
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]){
 
     printf("\t\t\t\t\tPC\tBP\tSP\tDP\tdata\n");
     //Print Initial Values
-    printf("Initial values:\t\t%d\t%d\t%d\t%d\n", PC, BP, SP, DP);
+    printf("Initial values:\t\t\t%d\t%d\t%d\t%d\n", PC, BP, SP, DP);
 
     //Begin program running
 
@@ -128,7 +128,7 @@ int main(int argc, char* argv[]){
                         else
                             pas[SP] = -1 * pas[SP];
 
-                        strcpy(OP, "ADD");
+                        strcpy(OP, "NEG");
                         break;
 
                     case 2:
@@ -139,7 +139,7 @@ int main(int argc, char* argv[]){
                             SP++;
                             pas[SP] = pas[SP] + pas[SP - 1];
                         }
-                        strcpy(OP, "SUB");
+                        strcpy(OP, "ADD");
                         break;
 
                     case 3:
@@ -150,6 +150,7 @@ int main(int argc, char* argv[]){
                             SP++;
                             pas[SP] = pas[SP] - pas[SP - 1];
                         }
+                        strcpy(OP, "SUB");
                         break;
 
                     case 4:
@@ -282,8 +283,8 @@ int main(int argc, char* argv[]){
                 break;
             case 4:
                 if(BP == GP){
-                    pas[GP + instructionRegister.M] = pas[SP];
-                    SP++;
+                    pas[GP + instructionRegister.M] = pas[DP];
+                    DP--;
                 }
                 else if(base(instructionRegister.L) == GP){
                     pas[GP + instructionRegister.M] = pas[SP];
@@ -293,7 +294,6 @@ int main(int argc, char* argv[]){
                     pas[base(instructionRegister.L) - instructionRegister.M] = pas[SP];
                     SP++;
                 }
-
                 strcpy(OP, "STO");
                 break;
 
@@ -321,16 +321,16 @@ int main(int argc, char* argv[]){
                 break;
 
             case 8:
-                if(BP == GP){
-                    if(pas[DP] == 0) {
+                if(BP == GP) {
+                    if (pas[DP] == 0)
                         PC = instructionRegister.M;
-                        DP--;
-                    }else if(pas[SP] == 0){
-                        PC = instructionRegister.M;
-                        SP++;
-                    }
+                    DP--;
                 }
-
+                else{
+                    if(pas[SP] == 0)
+                        PC = instructionRegister.M;
+                    SP++;
+                }
                 strcpy(OP, "JPC");
                 break;
 
@@ -338,7 +338,7 @@ int main(int argc, char* argv[]){
                 switch (instructionRegister.M) {
                     case 1:
                         if(BP == GP){
-                            DP++;
+                            //DP++;
                             printf("Top of Stack Value: %d\n", pas[DP]);
                             DP--;
                         }
